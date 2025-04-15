@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://b0bprtky0vlnr"]
+
+[ext_resource type="Script" uid="uid://cnd275bhfujca" path="res://Main.cs" id="1_glv2v"]
+
+[node name="Main" type="Control" node_paths=PackedStringArray("timer")]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_glv2v")
+timer = NodePath("Timer")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 1801.0
+autostart = true
