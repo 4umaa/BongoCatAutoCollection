@@ -2,12 +2,66 @@
 
 [ext_resource type="Script" uid="uid://cnd275bhfujca" path="res://Main.cs" id="1_glv2v"]
 
-[node name="Main" type="Control" node_paths=PackedStringArray("timer")]
+[node name="Main" type="Control" node_paths=PackedStringArray("timer", "UpdateTimer", "CustomTimerToFirstCollect", "TimeBeforeCollectingTextEdit", "CollectionCountTextEdit", "TimeToFirstCollectLineEdit", "StartButtonWithNewTimer", "StartButton", "CloseButton")]
+custom_minimum_size = Vector2(233, 300)
 layout_mode = 3
 anchors_preset = 0
+offset_right = 200.0
+offset_bottom = 300.0
 script = ExtResource("1_glv2v")
 timer = NodePath("Timer")
+UpdateTimer = NodePath("UpdateTimer")
+CustomTimerToFirstCollect = NodePath("CustomTimerToFirstCollect")
+TimeBeforeCollectingTextEdit = NodePath("VBoxContainer/TimeBeforeCollectTextEdit")
+CollectionCountTextEdit = NodePath("VBoxContainer/CollectionCountTextEdit")
+TimeToFirstCollectLineEdit = NodePath("VBoxContainer/TimeToFirstCollectLineEdit")
+StartButtonWithNewTimer = NodePath("VBoxContainer/StartWithNewTimerButton")
+StartButton = NodePath("VBoxContainer/StartButton")
+CloseButton = NodePath("VBoxContainer/CloseButton")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(233, 300)
+layout_mode = 2
+offset_right = 233.0
+offset_bottom = 300.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="TimeBeforeCollectTextEdit" type="TextEdit" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+editable = false
+selecting_enabled = false
+
+[node name="CollectionCountTextEdit" type="TextEdit" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+editable = false
+
+[node name="TimeToFirstCollectLineEdit" type="TextEdit" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+placeholder_text = "Delay time"
+
+[node name="StartWithNewTimerButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Start with delay"
+
+[node name="StartButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Start collecting"
+
+[node name="CloseButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Close"
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 1801.0
-autostart = true
+
+[node name="CustomTimerToFirstCollect" type="Timer" parent="."]
+one_shot = true
+
+[node name="UpdateTimer" type="Timer" parent="."]

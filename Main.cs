@@ -10,12 +10,29 @@ using System.Text;
 public partial class Main : Node
 {
     [Export] Timer timer;
+    [Export] Timer UpdateTimer;
+    [Export] Timer CustomTimerToFirstCollect;
+    [Export] TextEdit TimeBeforeCollectingTextEdit;
+    [Export] TextEdit CollectionCountTextEdit;
+    [Export] TextEdit TimeToFirstCollectLineEdit;
+    [Export] Button StartButtonWithNewTimer;
+    [Export] Button StartButton;
+    [Export] Button CloseButton;
+
     public override void _Ready()
     {
+        StartButton.Pressed += StartCollection;
+        StartButton.Pressed += StartTimer;
+        CloseButton.Pressed += CloseApplication;
         timer.Timeout += StartCollection;
-        StartCollection();
+        UpdateTimer.Timeout += PrintLeftTime;
+        timer.Timeout += UpdateCollectCountText;
+        StartButtonWithNewTimer.Pressed += StartWithCustomTimerButtonPressed;
 
     }
+    private int collectingCount = 0;
+
+
 
     [DllImport("user32.dll")]
     static extern IntPtr GetForegroundWindow();
@@ -85,8 +102,52 @@ public partial class Main : Node
                 {
                     MouseOperations.SetCursorPosition(oldMousePos);
                     SwitchWindoowToOld(oldWindowName);
+                    collectingCount += 1;
+                    UpdateCollectCountText();
                 };
             };
         };
+    }
+    private void StartTimer()
+    {
+        timer.Start();
+        UpdateTimer.Start();
+    }
+    private void CloseApplication()
+    {
+        GetTree().Quit();
+    }
+    private void PrintLeftTime()
+    {
+        if (!timer.IsStopped())
+        {
+            TimeBeforeCollectingTextEdit.Text = $"{timer.TimeLeft:F0}";
+        }
+        else if (!CustomTimerToFirstCollect.IsStopped())
+        {
+            TimeBeforeCollectingTextEdit.Text = $"{CustomTimerToFirstCollect.TimeLeft:F0}";
+        }
+
+
+    }
+    private void UpdateCollectCountText()
+    {
+        CollectionCountTextEdit.Text = collectingCount.ToString();
+    }
+    private void StartWithCustomTimerButtonPressed()
+    {
+        if (float.TryParse(TimeToFirstCollectLineEdit.Text, out float seconds))
+        {
+            CustomTimerToFirstCollect.WaitTime = seconds;
+            CustomTimerToFirstCollect.Timeout += OnDelayFinished;
+            CustomTimerToFirstCollect.Start();
+
+            UpdateTimer.Start();
+        }
+    }
+    private void OnDelayFinished()
+    {
+        StartCollection();
+        StartTimer();
     }
 }
